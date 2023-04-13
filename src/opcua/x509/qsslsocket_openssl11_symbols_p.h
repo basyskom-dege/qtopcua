@@ -48,7 +48,13 @@ Q_AUTOTEST_EXPORT const BIO_METHOD *q_BIO_s_mem();
 
 int q_DSA_bits(DSA *a);
 int q_EVP_CIPHER_CTX_reset(EVP_CIPHER_CTX *c);
+#if defined(OPENSSL_VERSION_MAJOR) && OPENSSL_VERSION_MAJOR >= 3
+int q_EVP_PKEY_get_base_id(const EVP_PKEY *pkey);
+#define q_EVP_PKEY_base_id q_EVP_PKEY_get_base_id
+#else
 int q_EVP_PKEY_base_id(EVP_PKEY *a);
+#endif // OPENSSL_VERSION_MAJOR >= 3
+
 int q_RSA_bits(RSA *a);
 Q_AUTOTEST_EXPORT int q_OPENSSL_sk_num(OPENSSL_STACK *a);
 Q_AUTOTEST_EXPORT void q_OPENSSL_sk_pop_free(OPENSSL_STACK *a, void (*b)(void *));

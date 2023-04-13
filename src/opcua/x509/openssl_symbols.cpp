@@ -117,7 +117,11 @@ DEFINEFUNC(BIO *, BIO_new, const BIO_METHOD *a, a, return nullptr, return)
 DEFINEFUNC(const BIO_METHOD *, BIO_s_mem, void, DUMMYARG, return nullptr, return)
 DEFINEFUNC2(int, BN_is_word, BIGNUM *a, a, BN_ULONG w, w, return 0, return)
 DEFINEFUNC(int, EVP_CIPHER_CTX_reset, EVP_CIPHER_CTX *c, c, return 0, return)
+#if defined(OPENSSL_VERSION_MAJOR) && OPENSSL_VERSION_MAJOR >= 3
+DEFINEFUNC(int, EVP_PKEY_get_base_id, const EVP_PKEY *pkey, pkey, return -1, return)
+#else
 DEFINEFUNC(int, EVP_PKEY_base_id, EVP_PKEY *a, a, return NID_undef, return)
+#endif // OPENSSL_VERSION_MAJOR >= 3
 DEFINEFUNC(int, RSA_bits, RSA *a, a, return 0, return)
 DEFINEFUNC(int, DSA_bits, DSA *a, a, return 0, return)
 DEFINEFUNC(int, OPENSSL_sk_num, OPENSSL_STACK *a, a, return -1, return)
@@ -862,7 +866,11 @@ bool q_resolveOpenSslSymbols()
     RESOLVEFUNC(OPENSSL_init_crypto)
     RESOLVEFUNC(ASN1_STRING_get0_data)
     RESOLVEFUNC(EVP_CIPHER_CTX_reset)
+#if defined(OPENSSL_VERSION_MAJOR) && OPENSSL_VERSION_MAJOR >= 3
+    RESOLVEFUNC(EVP_PKEY_get_base_id)
+#else
     RESOLVEFUNC(EVP_PKEY_base_id)
+#endif // OPENSSL_VERSION_MAJOR >= 3
     RESOLVEFUNC(RSA_bits)
     RESOLVEFUNC(OPENSSL_sk_new_null)
     RESOLVEFUNC(OPENSSL_sk_push)
